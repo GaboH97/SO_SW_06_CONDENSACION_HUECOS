@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.java.j2seproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>SO_SW_05_MULTIPROGRAMACION_REUBICACION</name>
+            <name>SO_SW_06_CONDENSACION_HUECOS</name>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

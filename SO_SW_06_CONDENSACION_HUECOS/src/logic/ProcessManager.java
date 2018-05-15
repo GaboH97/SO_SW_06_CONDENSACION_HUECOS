@@ -1,9 +1,6 @@
 package logic;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Clase que representa el manejador de procesos. Se encarga de crear, agregar y
@@ -18,7 +15,6 @@ public class ProcessManager {
     //------------------------ Atributos -----------------------------
     public static final int DEFAULT_QUANTUM = 5;
     private ArrayList<Process> input_ProcessList;
-    private ArrayList<Process> unprocessed_ProcessList;
     private ArrayList<Partition> output_PartitionList;
     private ArrayList<Partition> partitionsList;
 
@@ -30,7 +26,6 @@ public class ProcessManager {
         this.input_ProcessList = new ArrayList<>();
         this.output_PartitionList = new ArrayList<>();
         this.partitionsList = new ArrayList<>();
-        this.unprocessed_ProcessList = new ArrayList<>();
     }
 
     //------------------------ Métodos -----------------------------
@@ -89,7 +84,6 @@ public class ProcessManager {
      * @param name El nombre el proceso
      * @param executionTime El tiempo de ejecución del proceso
      * @param processSize Tamaño ocupado por el proceso
-     * @param belongingPartition Partición en la que está contenido el proceso
      * @return Una nueva instancia de la clase Proceso con los datos ingresados
      */
     public static Process createProcess(String name, int processSize, int executionTime) {
@@ -102,94 +96,12 @@ public class ProcessManager {
      * @param partitionSize
      * @return Una nueva instancia de la clase Proceso con los datos ingresados
      */
-    public static Partition createPartition(String partitionName, int partitionSize) {
-        return new Partition(partitionName, partitionSize);
-    }
-
-    /**
-     * Método que procesa los procesos
-     */
-    public void asignProcesses() {
-        int currentPartitionIndex = 0;
-        for (Process process : input_ProcessList) {
-            boolean added = false;
-            int counter = 0;
-            while (!added && counter != partitionsList.size()) {
-                if (partitionsList.get(currentPartitionIndex).getPartitionSize() >= process.getProcessSize()) {
-                    partitionsList.get(currentPartitionIndex++).getInputProcesses().add(process);
-                    added = true;
-                    counter = 0;
-                    currentPartitionIndex = (currentPartitionIndex == partitionsList.size()) ? 0 : currentPartitionIndex;
-                } else {
-                    counter++;
-                    currentPartitionIndex++;
-                    currentPartitionIndex = (currentPartitionIndex == partitionsList.size()) ? 0 : currentPartitionIndex;
-                }
-            }
-            if (!added) {
-                unprocessed_ProcessList.add(process);
-            }
-        }
+    public static Partition createPartition(int partitionSize) {
+        return new Partition(partitionSize);
     }
 
     public void processProcesses() {
-        asignProcesses();
-        do {
-            for (Partition partition : partitionsList) {
-                if (partition.getInputProcesses().size() != partition.getOutputListProcesses().size()) {
-                    if (partition.getCurrentProcess() == null) {
-                        partition.setCurrentProcess(partition.getInputProcesses().get(0));
-                    }
-                    try {
-                        Process p = partition.getCurrentProcess();
-                        p.setExecutionTime(p.getExecutionTime() - quantum);
-                        partition.getExecutionProcesses().add(p);
-                        if (p.getExecutionTime() <= 0) {
-                            partition.getOutputListProcesses().add(p);
-                            if (partition.getInputProcesses().size() == partition.getOutputListProcesses().size() 
-                                    && !output_PartitionList.contains(partition)) {
-                                output_PartitionList.add(partition);
-                            }
-                        }
-                        if (partition.getInputProcesses().size() != partition.getOutputListProcesses().size()) {
-                            partition.getNextNotNull();
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();//aca no debe entrar
-                    }
-                } else {
-                    if (!output_PartitionList.contains(partition)) {
-                        output_PartitionList.add(partition);
-                    }
-                }
-            }
-        }
-        while (!ended());
-    }
-
-    public boolean ended() {
-        for (Partition partition : partitionsList) {
-                            System.out.println(partition.getPartitionName() + ": " + partition.getInputProcesses().size() +"-" +partition.getOutputListProcesses().size());
-
-            if (partition.getInputProcesses().size() != partition.getOutputListProcesses().size()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     *
-     * @param originList Lista de origen
-     * @param name Nombre del proceso
-     * @param destinationList Lista de destino
-     */
-    public void doTransition(ArrayList destinationList, String name, ArrayList originList) {
-        try {
-            destinationList.add(searchProcess(name, originList));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //TODO EVERYTHING
     }
 
     /**
@@ -247,10 +159,6 @@ public class ProcessManager {
         return quantum;
     }
 
-    public ArrayList<Process> getUnprocessed_ProcessList() {
-        return unprocessed_ProcessList;
-    }
-
     public ArrayList<Partition> getPartitionsList() {
         return partitionsList;
     }
@@ -258,7 +166,6 @@ public class ProcessManager {
     @Override
     public String toString() {
         String todo = "ProcessManager{\n" + "\n input_ProcessList=" + input_ProcessList
-                + "\n unprocessed_ProcessList=" + unprocessed_ProcessList
                 + "\n salida partitions =" + output_PartitionList
                 + "\n paso por =";
         for (Partition partition : partitionsList) {

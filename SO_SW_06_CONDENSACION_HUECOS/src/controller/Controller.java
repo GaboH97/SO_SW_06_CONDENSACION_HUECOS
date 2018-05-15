@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import logic.*;
 import logic.ProcessManager;
-import views.AddPartitionDialog;
 import views.AddProcessDialog;
 import views.GUIUtils;
 import static views.GUIUtils.APP_TITLE;
@@ -31,11 +30,6 @@ public class Controller implements ActionListener {
      * Ventana de diálogo para crear y agregar un nuevo proceso
      */
     private AddProcessDialog addProcessDialog;
-
-    /**
-     *
-     */
-    private AddPartitionDialog addPartitionDialog;
 
     /**
      * GUI principal
@@ -79,14 +73,12 @@ public class Controller implements ActionListener {
         processManager = new ProcessManager();
         mainWindow = new MainWindow(this);
         addProcessDialog = new AddProcessDialog(mainWindow, true, this);
-        addPartitionDialog = new AddPartitionDialog(mainWindow, true, this);
     }
 
     private Controller(ProcessManager processManager) {
         this.processManager = processManager;
         mainWindow = new MainWindow(this);
         addProcessDialog = new AddProcessDialog(mainWindow, true, this);
-        addPartitionDialog = new AddPartitionDialog(mainWindow, true, this);
         showPartitionsAndProcesses();
     }
 
@@ -109,15 +101,6 @@ public class Controller implements ActionListener {
                 break;
             case CREATE_PROCESS:
                 createProcess();
-                break;
-            case OPEN_CREATE_PARTITION:
-                openCreatePartition();
-                break;
-            case CREATE_PARTITION:
-                createPartition();
-                break;
-            case EDIT_PARTITION:
-                editPartition();
                 break;
             case EDIT_PROCESS:
                 editProcess();
@@ -142,14 +125,6 @@ public class Controller implements ActionListener {
                 showPartitionsReport2();
                 break;
         }
-    }
-
-    private void openCreatePartition() {
-//        addPartitionDialog.getCreatePartitionbtn().setActionCommand(Actions.EDIT_PARTITION.name());
-        addPartitionDialog.getCreatePartitionbtn().setActionCommand(Actions.CREATE_PARTITION.name());
-        addPartitionDialog.getPartitionNamejtf().setEditable(true);
-        addPartitionDialog.getPartitionNamejtf().revalidate();
-        addPartitionDialog.setVisible(true);
     }
 
     private void openCreateProcess() throws HeadlessException {
@@ -202,45 +177,6 @@ public class Controller implements ActionListener {
     }
 
     /**
-     * Agrega un proceso
-     */
-    private void createPartition() {
-        //Crea una nuevo Proceso, si no es nulo, significa que ha sido creado
-        //Exitosamente, es decir
-        Partition partition;
-        try {
-            partition = addPartitionDialog.createPartition(processManager.getPartitionsList());
-            if (partition != null) {
-                //Agrega el proceso en la lógica y si ha sido agregado correctamente,
-                //Lo agrega a la GUI y cierra el diálogo de agregar proceso
-                if (processManager.addPartition(partition)) {
-                    mainWindow.addPartition(partition);
-                    addPartitionDialog.close();
-                } else {
-                    //Muestra un mensaje de error indicando que el proceso
-                    //Ya existe en la lógica
-                    JOptionPane.showMessageDialog(addPartitionDialog,
-                            GUIUtils.MSG_PARTITION_ALREADY_EXISTS,
-                            APP_TITLE,
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                //Muestra un mensaje de error indicando que en el diálogo para agregar
-                //Procesos hay campos vacíos
-                JOptionPane.showMessageDialog(addPartitionDialog,
-                        GUIUtils.MSG_EMPTY_FIELDS,
-                        APP_TITLE,
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(mainWindow,
-                    ex.getMessage(),
-                    GUIUtils.APP_TITLE,
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    /**
      * Comienza la ejecución de los procesos
      */
     private void start() {
@@ -264,7 +200,7 @@ public class Controller implements ActionListener {
         } else {
             processManager.processProcesses();
             mainWindow.showOptions(false);
-            mainWindow.showPartitionsandProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
+            mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
             mainWindow.showOrderFinishingPartitions(processManager.getOutput_PartitionsList());
         }
     }
@@ -303,26 +239,8 @@ public class Controller implements ActionListener {
      * Muestra las particiones y procesos creados
      */
     private void showPartitionsAndProcesses() {
-        mainWindow.showPartitionsandProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
+        mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
 //        mainWindow.showOrderFinishingPartitions(processManager.getOutput_PartitionsList());
-    }
-
-    public void editPartition(String partitionName) {
-        try {
-            if (processManager.searchPartition(partitionName).getInputProcesses().isEmpty()) {
-                Partition par = processManager.searchPartition(partitionName);
-                addPartitionDialog.getCreatePartitionbtn().setActionCommand(Actions.EDIT_PARTITION.name());
-                addPartitionDialog.setValues(par);
-                addPartitionDialog.getPartitionNamejtf().setEditable(false);
-                addPartitionDialog.setVisible(true);
-                addPartitionDialog.revalidate();
-            } else {
-                JOptionPane.showMessageDialog(mainWindow,
-                        GUIUtils.MSG_CANNOT_EDIT_PARTITION,
-                        APP_TITLE, JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-        }
     }
 
     /**
@@ -337,7 +255,7 @@ public class Controller implements ActionListener {
             try {
                 if (processManager.searchPartition(partitionName).getInputProcesses().isEmpty()) {
                     processManager.getPartitionsList().remove(processManager.searchPartition(partitionName));
-                    mainWindow.showPartitionsandProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
+                    mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
                 } else {
                     JOptionPane.showMessageDialog(mainWindow,
                             GUIUtils.MSG_CANNOT_DELETE_PARTITION,
@@ -383,7 +301,7 @@ public class Controller implements ActionListener {
             try {
                 logic.Process p = processManager.searchProcess(processName, processManager.getInput_ProcessList());
                 processManager.getInput_ProcessList().remove(p);
-                mainWindow.showPartitionsandProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
+                mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
                 System.out.println("wiii");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(mainWindow,
@@ -396,7 +314,6 @@ public class Controller implements ActionListener {
     private void showPartitionsReport1() {
         mainWindow.showProcessesPerPartitionsThatPassed(processManager.getPartitionTableHeaders(),
                 processManager.getPartitionsList());
-        mainWindow.showUnprocessedProcesses(processManager.getUnprocessed_ProcessList());
     }
 
     private void showPartitionsReport2() {
@@ -404,26 +321,12 @@ public class Controller implements ActionListener {
                 processManager.getPartitionsList());
     }
 
-    private void editPartition() {
-        try {
-            Partition par = addPartitionDialog.editPartition(processManager.getPartitionsList());
-            int indexOfPartitiontoEdit = processManager.getPartitionsList().indexOf(processManager.searchPartition(par.getPartitionName()));
-            processManager.getPartitionsList().set(indexOfPartitiontoEdit, par);
-            mainWindow.showPartitionsandProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
-            addPartitionDialog.close();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(mainWindow,
-                    ex.getMessage(),
-                    APP_TITLE, JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     private void editProcess() {
         try {
             logic.Process pro = addProcessDialog.editProccess(processManager.getPartitionsList());
             int indexOfProcesstoEdit = processManager.getInput_ProcessList().indexOf(processManager.searchProcess(pro.getName(), processManager.getInput_ProcessList()));
             processManager.getInput_ProcessList().set(indexOfProcesstoEdit, pro);
-            mainWindow.showPartitionsandProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
+            mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
             addProcessDialog.close();
         } catch (Exception ex) {
             ex.printStackTrace();

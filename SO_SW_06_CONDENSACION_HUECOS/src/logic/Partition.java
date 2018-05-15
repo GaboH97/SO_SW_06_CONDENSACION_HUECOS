@@ -6,31 +6,52 @@ import java.util.ArrayList;
  *
  * @author Gabriel Amaya, Cesar Cardozo
  */
-public class Partition{
+public class Partition {
 
     //------------------ Attributes --------------------------
     private String partitionName;
+    private int partitionID;
     private int partitionSize;
+    //MIRAR SI ES UNA LISTA O UN SOLO PROCESO
+    //IGUAL SOLO SE EJECUTA UNO Y LUEGO SE LIBERA LA PARTICIÓN
+    private Process assignedProcess;
     private ArrayList<Process> inputProcesses;
     private ArrayList<Process> executionProcesses;
     private ArrayList<Process> outputListProcesses;
     public Process currentProcess;
-    private int totalExecutionTime;
+    private static int BASE_ID = 1;
 
     //--------------------- Constructors ------------------------
     /**
-     *
-     * @param partitionName
+     *  CUANDO HAY UNA CONDENSACIÓN, SE LE PASA EL TAMAÑO DE LA NUEVA PARTICIÓN
+     * 
      * @param partitionSize
      */
-    public Partition(String partitionName, int partitionSize) {
-        this.partitionName = partitionName;
+    public Partition(int partitionSize) {
+        partitionID = BASE_ID++;
+        setPartitionName("PA" + String.valueOf(partitionID));
         this.partitionSize = partitionSize;
         this.inputProcesses = new ArrayList<>();
         this.executionProcesses = new ArrayList<>();
         this.outputListProcesses = new ArrayList<>();
         currentProcess = null;
-        this.totalExecutionTime = 0;
+    }
+
+    /**
+     * CUANDO ES HUECO SE LE PONE NULL
+     *
+     * @param assignedProcess
+     */
+    public Partition(Process assignedProcess) {
+
+        partitionID = BASE_ID++;
+        setPartitionName("PA" + String.valueOf(partitionID));
+        this.assignedProcess = assignedProcess;
+        this.partitionSize = this.assignedProcess.getProcessSize();
+        this.inputProcesses = new ArrayList<>();
+        this.executionProcesses = new ArrayList<>();
+        this.outputListProcesses = new ArrayList<>();
+        currentProcess = null;
     }
 
     private boolean existNotNull() {
@@ -41,7 +62,7 @@ public class Partition{
         }
         return false;
     }
-    
+
     public Process getNextNotNull() throws Exception {
         for (int i = 0; i < this.inputProcesses.size(); i++) {
             if (this.inputProcesses.get(i).getName().equals(this.currentProcess.getName())) {
@@ -66,16 +87,24 @@ public class Partition{
     }
 
     public int getTotalExecutionTime() {
-        totalExecutionTime = 0;
-        for (Process process : inputProcesses) {
-            totalExecutionTime += process.getOldExecutionTime();
-        }
-        return totalExecutionTime;
+        return assignedProcess.getExecutionTime();
     }
 
     //------------------ Getters & Setters --------------------------
+    public Process getAssignedProcess() {
+        return assignedProcess;
+    }
+
+    public void setAssignedProcess(Process assignedProcess) {
+        this.assignedProcess = assignedProcess;
+    }
+
     public String getPartitionName() {
         return partitionName;
+    }
+
+    public int getPartitionID() {
+        return partitionID;
     }
 
     public void setPartitionName(String partitionName) {
@@ -100,10 +129,10 @@ public class Partition{
 
     @Override
     public String toString() {
-         return "{Partition: " + getPartitionName() + System.getProperty("line.separator")
+        return "{Partition: " + getPartitionName() + System.getProperty("line.separator")
                 + "\tProcesses: " + getInputProcesses() + System.getProperty("line.separator")
-                + "\tExecution: " + getExecutionProcesses()+ System.getProperty("line.separator")
-                + "\tOutput: " + getOutputListProcesses()+ System.getProperty("line.separator");
+                + "\tExecution: " + getExecutionProcesses() + System.getProperty("line.separator")
+                + "\tOutput: " + getOutputListProcesses() + System.getProperty("line.separator");
     }
 
     public Process getCurrentProcess() {
@@ -113,8 +142,6 @@ public class Partition{
     public void setCurrentProcess(Process currentProcess) {
         this.currentProcess = currentProcess;
     }
-    
-    
 
     public ArrayList<Process> getExecutionProcesses() {
         return executionProcesses;
@@ -131,4 +158,5 @@ public class Partition{
     public void setOutputListProcesses(ArrayList<Process> outputListProcesses) {
         this.outputListProcesses = outputListProcesses;
     }
+
 }
