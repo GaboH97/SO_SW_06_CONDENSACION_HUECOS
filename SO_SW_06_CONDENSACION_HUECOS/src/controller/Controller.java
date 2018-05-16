@@ -39,8 +39,6 @@ public class Controller implements ActionListener {
     /**
      * Atributo privado para la creación de única instancia de clase
      */
-    private logic.Process processToEdit;
-    private Partition partitionToEdit;
     private static Controller controller;
 
     //-------------------- Constructores -------------------------
@@ -68,13 +66,13 @@ public class Controller implements ActionListener {
         }
         return controller;
     }
-
+    
     private Controller() {
         processManager = new ProcessManager();
         mainWindow = new MainWindow(this);
         addProcessDialog = new AddProcessDialog(mainWindow, true, this);
     }
-
+    
     private Controller(ProcessManager processManager) {
         this.processManager = processManager;
         mainWindow = new MainWindow(this);
@@ -116,7 +114,7 @@ public class Controller implements ActionListener {
                 break;
             case SHOW_PARTITIONS_AND_PROCESSES_TWO:
                 showPartitionsAndProcesses();
-                mainWindow.showOrderFinishingPartitions(processManager.getOutput_PartitionsList());
+                mainWindow.showOrderFinishingPartitionsAndCondensations(processManager.getOutput_PartitionsList());
                 break;
             case SHOW_PARTITIONS_REPORT_1:
                 showPartitionsReport1();
@@ -126,7 +124,7 @@ public class Controller implements ActionListener {
                 break;
         }
     }
-
+    
     private void openCreateProcess() throws HeadlessException {
         if (!processManager.getPartitionsList().isEmpty()) {
             addProcessDialog.getCreateProcessbtn().setActionCommand(Actions.CREATE_PROCESS.name());
@@ -198,10 +196,10 @@ public class Controller implements ActionListener {
                     APP_TITLE,
                     JOptionPane.ERROR_MESSAGE);
         } else {
-            processManager.processProcesses();
+            processManager.processProcesses1();
             mainWindow.showOptions(false);
             mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
-            mainWindow.showOrderFinishingPartitions(processManager.getOutput_PartitionsList());
+            mainWindow.showOrderFinishingPartitionsAndCondensations(processManager.getOutput_PartitionsList());
         }
     }
 
@@ -230,7 +228,7 @@ public class Controller implements ActionListener {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
     public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
@@ -241,29 +239,6 @@ public class Controller implements ActionListener {
     private void showPartitionsAndProcesses() {
         mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
 //        mainWindow.showOrderFinishingPartitions(processManager.getOutput_PartitionsList());
-    }
-
-    /**
-     * TOCA MIRAR SI EL BORRADO TAMBIÉN SE HACE EN CASCADA, ES DECIR QUE SI SE
-     * BORRA UNA PARTICIÓN, TAMBIÉN SE BORRAN SUS PROCESOS
-     *
-     * @param partitionName La partición a borrar
-     */
-    public void deletePartition(String partitionName) {
-        int option = JOptionPane.showConfirmDialog(mainWindow, GUIUtils.MSG_CONFIRM_DELETE_PARTITION, APP_TITLE, JOptionPane.YES_NO_OPTION);
-        if (option == JOptionPane.YES_OPTION) {
-            try {
-                if (processManager.searchPartition(partitionName).getInputProcesses().isEmpty()) {
-                    processManager.getPartitionsList().remove(processManager.searchPartition(partitionName));
-                    mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
-                } else {
-                    JOptionPane.showMessageDialog(mainWindow,
-                            GUIUtils.MSG_CANNOT_DELETE_PARTITION,
-                            APP_TITLE, JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (Exception ex) {
-            }
-        }
     }
 
     /**
@@ -295,7 +270,7 @@ public class Controller implements ActionListener {
      * @param processName Nombre del proceso a borrar
      */
     public void deleteProcess(String processName) {
-
+        
         int option = JOptionPane.showConfirmDialog(mainWindow, GUIUtils.MSG_CONFIRM_DELETE_PROCESS, APP_TITLE, JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
             try {
@@ -310,17 +285,15 @@ public class Controller implements ActionListener {
             }
         }
     }
-
+    
     private void showPartitionsReport1() {
-        mainWindow.showProcessesPerPartitionsThatPassed(processManager.getPartitionTableHeaders(),
-                processManager.getPartitionsList());
+        mainWindow.showProcessesAllocationAndIOProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList(), processManager.getOutput_ProcessList());
     }
-
+    
     private void showPartitionsReport2() {
-        mainWindow.showProcessesPerPartitionsReadyExecOut(processManager.getPartitionTableHeaders(),
-                processManager.getPartitionsList());
+        mainWindow.showOrderFinishingPartitionsAndCondensations(processManager.getOutput_ProcessList(), processManager.getCondensations());
     }
-
+    
     private void editProcess() {
         try {
             logic.Process pro = addProcessDialog.editProccess(processManager.getPartitionsList());

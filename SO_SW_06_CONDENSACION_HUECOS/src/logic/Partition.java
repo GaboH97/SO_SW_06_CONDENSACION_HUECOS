@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * @author Gabriel Amaya, Cesar Cardozo
  */
-public class Partition {
+public class Partition implements Cloneable{
 
     //------------------ Attributes --------------------------
     private String partitionName;
@@ -15,10 +15,6 @@ public class Partition {
     //MIRAR SI ES UNA LISTA O UN SOLO PROCESO
     //IGUAL SOLO SE EJECUTA UNO Y LUEGO SE LIBERA LA PARTICIÓN
     private Process assignedProcess;
-    private ArrayList<Process> inputProcesses;
-    private ArrayList<Process> executionProcesses;
-    private ArrayList<Process> outputListProcesses;
-    public Process currentProcess;
     private static int BASE_ID = 1;
 
     //--------------------- Constructors ------------------------
@@ -27,14 +23,11 @@ public class Partition {
      * 
      * @param partitionSize
      */
-    public Partition(int partitionSize) {
+    public Partition(int partitionSizde) {
         partitionID = BASE_ID++;
         setPartitionName("PA" + String.valueOf(partitionID));
-        this.partitionSize = partitionSize;
-        this.inputProcesses = new ArrayList<>();
-        this.executionProcesses = new ArrayList<>();
-        this.outputListProcesses = new ArrayList<>();
-        currentProcess = null;
+        this.partitionSize = partitionSizde;
+        this.assignedProcess = null;
     }
 
     /**
@@ -43,47 +36,17 @@ public class Partition {
      * @param assignedProcess
      */
     public Partition(Process assignedProcess) {
-
         partitionID = BASE_ID++;
         setPartitionName("PA" + String.valueOf(partitionID));
         this.assignedProcess = assignedProcess;
-        this.partitionSize = this.assignedProcess.getProcessSize();
-        this.inputProcesses = new ArrayList<>();
-        this.executionProcesses = new ArrayList<>();
-        this.outputListProcesses = new ArrayList<>();
-        currentProcess = null;
+        this.partitionSize = this.assignedProcess.getProcessSize();   
     }
 
-    private boolean existNotNull() {
-        for (Process process : inputProcesses) {
-            if (process.getExecutionTime() > 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Process getNextNotNull() throws Exception {
-        for (int i = 0; i < this.inputProcesses.size(); i++) {
-            if (this.inputProcesses.get(i).getName().equals(this.currentProcess.getName())) {
-                for (int j = i + 1; j < this.inputProcesses.size(); j++) {
-                    if (this.inputProcesses.get(j).getExecutionTime() > 0) {
-                        currentProcess = this.inputProcesses.get(j);
-                        return currentProcess;
-                    }
-                }
-            }
-        }
-        if (existNotNull()) {
-            for (int i = 0; i < this.inputProcesses.size(); i++) {
-                if (this.inputProcesses.get(i).getExecutionTime() > 0) {
-                    currentProcess = inputProcesses.get(i);
-                    return currentProcess;
-                }
-            }
-        }
-        currentProcess = null;
-        throw new Exception("Se acabaron los procesos");
+    public Partition(String partitionName, int partitionID, int partitionSize, Process assignedProcess) {
+        this.partitionName = partitionName;
+        this.partitionID = partitionID;
+        this.partitionSize = partitionSize;
+        this.assignedProcess = assignedProcess;
     }
 
     public int getTotalExecutionTime() {
@@ -119,44 +82,17 @@ public class Partition {
         this.partitionSize = partitionSize;
     }
 
-    public ArrayList<Process> getInputProcesses() {
-        return inputProcesses;
-    }
-
-    public void setInputProcesses(ArrayList<Process> inputProcesses) {
-        this.inputProcesses = inputProcesses;
-    }
-
     @Override
     public String toString() {
-        return "{Partition: " + getPartitionName() + System.getProperty("line.separator")
-                + "\tProcesses: " + getInputProcesses() + System.getProperty("line.separator")
-                + "\tExecution: " + getExecutionProcesses() + System.getProperty("line.separator")
-                + "\tOutput: " + getOutputListProcesses() + System.getProperty("line.separator");
+        return this.partitionName + "Partition " + this.assignedProcess + "size" + this.partitionSize + "\n";
     }
-
-    public Process getCurrentProcess() {
-        return currentProcess;
+    
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new Partition(this.partitionName, this.partitionID, this.partitionSize, this.assignedProcess);
+    }   
+    
+    public Object[] getDataVectorForTableOfProcessesThatPassed(){
+        return new Object[]{getPartitionName(),getAssignedProcess().getName(),getPartitionSize()};
     }
-
-    public void setCurrentProcess(Process currentProcess) {
-        this.currentProcess = currentProcess;
-    }
-
-    public ArrayList<Process> getExecutionProcesses() {
-        return executionProcesses;
-    }
-
-    public void setExecutionProcesses(ArrayList<Process> executionProcesses) {
-        this.executionProcesses = executionProcesses;
-    }
-
-    public ArrayList<Process> getOutputListProcesses() {
-        return outputListProcesses;
-    }
-
-    public void setOutputListProcesses(ArrayList<Process> outputListProcesses) {
-        this.outputListProcesses = outputListProcesses;
-    }
-
 }

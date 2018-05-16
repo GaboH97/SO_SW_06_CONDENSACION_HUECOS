@@ -72,4 +72,11 @@ public class Condensation {
         };
     }
 
+    @Override
+    public String toString() {
+        return "Condensation{"+ partition1.getPartitionName() + " - "+ partition2.getPartitionName() + ", condensationSize=" + condensationSize + ", condensationID=" + condensationID + ", condensationName=" + condensationName + "}\n";
+    }
+    
+    
+
 }

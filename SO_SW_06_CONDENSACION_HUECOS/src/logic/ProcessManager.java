@@ -14,18 +14,34 @@ public class ProcessManager {
 
     //------------------------ Atributos -----------------------------
     public static final int DEFAULT_QUANTUM = 5;
+    public static final int DEFAULT_MEMORY = 50;
+
     private ArrayList<Process> input_ProcessList;
+    private ArrayList<Process> output_ProcessList;
     private ArrayList<Partition> output_PartitionList;
     private ArrayList<Partition> partitionsList;
-
+    private ArrayList<Partition> currentPartitionList;
+    private ArrayList<Condensation> condensations;
     private int quantum;
+    private int memory;
+    private int currentUsedMemory;
+    private int lastAssigned;
+    
+    private int currentIndex;
 
     //------------------------ Constructores -----------------------------
     public ProcessManager() {
         this.quantum = DEFAULT_QUANTUM;
+        this.memory = DEFAULT_MEMORY;
+        this.currentUsedMemory = 0;
+        this.lastAssigned = 0;
+        this.currentIndex = 0;
         this.input_ProcessList = new ArrayList<>();
-        this.output_PartitionList = new ArrayList<>();
+        this.output_ProcessList = new ArrayList<>();
         this.partitionsList = new ArrayList<>();
+        this.currentPartitionList = new ArrayList<>();
+        this.condensations = new ArrayList<>();
+        this.output_PartitionList = new ArrayList<>();
     }
 
     //------------------------ Métodos -----------------------------
@@ -96,12 +112,122 @@ public class ProcessManager {
      * @param partitionSize
      * @return Una nueva instancia de la clase Proceso con los datos ingresados
      */
-    public static Partition createPartition(int partitionSize) {
-        return new Partition(partitionSize);
+    public static Partition createPartition(Process pro) {
+        return new Partition(pro);
     }
 
-    public void processProcesses() {
-        //TODO EVERYTHING
+    public boolean assignProcessesInitially(Process pro) {
+        if (currentUsedMemory + pro.getProcessSize() <= memory) {
+            Partition par = createPartition(pro);
+            try {
+                partitionsList.add((Partition) par.clone());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            currentPartitionList.add(par);
+            currentUsedMemory += par.getPartitionSize();
+            lastAssigned++;
+            return true;
+        }
+        return false;
+    }
+
+    public int fits(Process pro) {
+        for (int i = 0; i < currentPartitionList.size(); i++) {
+            if (currentPartitionList.get(i).getAssignedProcess() == null && currentPartitionList.get(i).getPartitionSize() >= pro.getProcessSize()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void assignProcess() {
+        for (int i = lastAssigned; i < input_ProcessList.size(); i++) {
+            Process pro = input_ProcessList.get(i);
+            int index = fits(pro);
+            if (index != -1) {
+                if (currentPartitionList.get(index).getPartitionSize() == pro.getProcessSize()) {
+                    currentPartitionList.get(index).setAssignedProcess(pro);
+                } else {
+                    int remeaning = currentPartitionList.get(index).getPartitionSize() - pro.getProcessSize();
+                    Partition par1 = new Partition(pro);
+                    Partition par2 = new Partition(remeaning);
+                    currentPartitionList.set(index, par1);
+                    currentPartitionList.add(index + 1, par2);
+                    try {
+                        partitionsList.add((Partition) par1.clone());
+                        partitionsList.add((Partition) par2.clone());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    lastAssigned++;
+                }
+            }
+        }
+
+    }
+
+    public void processProcesses1() {
+        for (Process pro : input_ProcessList) {
+            if (assignProcessesInitially(pro)) {
+            } else {
+                break;
+            }
+        }
+        excecuteProcess();
+        condensate();
+        do {
+        assignProcess();
+        excecuteProcess();
+        condensate();
+        } while (input_ProcessList.size() != output_ProcessList.size());
+    }
+
+    public void condensate() {
+        boolean aux = false;
+        for (int i = 0; i < currentPartitionList.size() - 1; i++) {
+            if (currentPartitionList.get(i).getAssignedProcess() == null && currentPartitionList.get(i + 1).getAssignedProcess() == null) {
+                Condensation con = new Condensation(currentPartitionList.get(i), currentPartitionList.get(i + 1));
+                condensations.add(con);
+                Partition par = new Partition(con.getCondensationSize());
+                currentPartitionList.set(i, par);
+                currentPartitionList.remove(i + 1);
+                try {
+                    partitionsList.add((Partition) par.clone());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                aux = true;
+            }
+        }
+        if (aux) {
+            condensate();
+        }
+    }
+
+    public void excecuteProcess() {
+        for (int i = currentIndex; i < currentPartitionList.size(); i++) {
+            if (currentPartitionList.get(i).getAssignedProcess() != null) {
+                currentPartitionList.get(i).getAssignedProcess().setExecutionTime(currentPartitionList.get(i).getAssignedProcess().getExecutionTime() - quantum);
+                if (currentPartitionList.get(i).getAssignedProcess().getExecutionTime() <= 0) {
+                    currentUsedMemory -= currentPartitionList.get(i).getAssignedProcess().getProcessSize();
+                    output_ProcessList.add(currentPartitionList.get(i).getAssignedProcess());
+                    output_PartitionList.add(currentPartitionList.get(i));
+                    currentPartitionList.get(i).setAssignedProcess(null);
+                }
+            }
+        }
+        for (int i = 0; i < currentIndex; i++) {
+            if (currentPartitionList.get(i).getAssignedProcess() != null) {
+                currentPartitionList.get(i).getAssignedProcess().setExecutionTime(currentPartitionList.get(i).getAssignedProcess().getExecutionTime() - quantum);
+                if (currentPartitionList.get(i).getAssignedProcess().getExecutionTime() <= 0) {
+                    currentUsedMemory -= currentPartitionList.get(i).getAssignedProcess().getProcessSize();
+                    output_ProcessList.add(currentPartitionList.get(i).getAssignedProcess());
+                    output_PartitionList.add(currentPartitionList.get(i));
+                    currentPartitionList.get(i).setAssignedProcess(null);
+                }
+            }
+        }
     }
 
     /**
@@ -151,8 +277,8 @@ public class ProcessManager {
         return input_ProcessList;
     }
 
-    public ArrayList<Partition> getOutput_PartitionsList() {
-        return output_PartitionList;
+    public ArrayList<Process> getOutput_ProcessList() {
+        return output_ProcessList;
     }
 
     public double getQuantum() {
@@ -163,17 +289,35 @@ public class ProcessManager {
         return partitionsList;
     }
 
+    public ArrayList<Partition> getOutput_PartitionsList() {
+        return output_PartitionList;
+    }
+
+    public ArrayList<Condensation> getCondensations() {
+        return condensations;
+    }
+    
+    
+
     @Override
     public String toString() {
-        String todo = "ProcessManager{\n" + "\n input_ProcessList=" + input_ProcessList
-                + "\n salida partitions =" + output_PartitionList
-                + "\n paso por =";
+        String aux = "Partitions general\n";
         for (Partition partition : partitionsList) {
-            todo += partition.getPartitionName() + ": " + partition.getInputProcesses() + " -";
-
+            aux += partition.toString();
         }
-
-        return todo;
+        aux += "\ncondenzazaos\n";
+        for (Condensation con : condensations) {
+            aux += con.toString();
+        }
+        aux += "\nlista salida procesos\n";
+        for (Process process : output_ProcessList) {
+            aux += process.toString();
+        }
+        aux += "\nlista salida particiones\n";
+        for (Partition par : output_PartitionList) {
+            aux += par.toString();
+        }
+        return aux;
     }
 
     public void setQuantum(int quantum) {

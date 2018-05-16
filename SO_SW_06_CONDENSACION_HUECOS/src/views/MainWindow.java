@@ -28,13 +28,6 @@ import static views.GUIUtils.APP_TITLE;
 public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
     //---------------------- Attributes -------------------------------
-    /**
-     * Modelo de tabla utilizado para manipular la tabla
-     */
-    private DefaultTableModel processesPerPartitionsPassedTableModel;
-    private DefaultTableModel processesPerPartitionsExecTableModel;
-    private DefaultTableModel processesPerPartitionsOutTableModel;
-
     //SW06
     private DefaultTableModel processesTableModel;
     private DefaultTableModel IOProcessesTableModel;
@@ -55,38 +48,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         this.controller = controller;
 
         processesTableModel = new DefaultTableModel(GUIUtils.ADD_PROCESSES_TABLE_HEADERS, 0) {
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        processesPerPartitionsPassedTableModel = new DefaultTableModel() {
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        processesPerPartitionsPassedTableModel = new DefaultTableModel() {
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        processesPerPartitionsOutTableModel = new DefaultTableModel() {
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        processesPerPartitionsExecTableModel = new DefaultTableModel() {
 
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -130,7 +91,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         this.setTitle(APP_TITLE);
         //this.setUndecorated(true);
         initComponents();
-        orderFinishingPanel.setVisible(false);
+        orderFinishingAndCondensationsPanel.setVisible(false);
         setActions(controller);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         showOptions(true);
@@ -164,24 +125,20 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         jScrollPane1 = new javax.swing.JScrollPane();
         processesTable = new javax.swing.JTable();
         tableHeaderProcesseslbl = new javax.swing.JLabel();
-        processesPerPartitionsPanel = new javax.swing.JPanel();
-        tableHeaderPartitionslbl2 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        processesPerPartitionOutTable = new javax.swing.JTable();
-        orderFinishingPanel = new javax.swing.JPanel();
+        orderFinishingAndCondensationsPanel = new javax.swing.JPanel();
         orderFinishingTablelbl = new javax.swing.JLabel();
-        jScrollPane8 = new javax.swing.JScrollPane();
+        orderFinishingTablelbl1 = new javax.swing.JLabel();
+        jScrollPane11 = new javax.swing.JScrollPane();
         orderFinishingTable = new javax.swing.JTable();
-        processesPerPartitionsReadyExecOutPanel = new javax.swing.JPanel();
-        unprocessedProcessesTablelbl1 = new javax.swing.JLabel();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        processesPerPartitionsOutTable = new javax.swing.JTable();
-        unprocessedProcessesTablelbl2 = new javax.swing.JLabel();
         jScrollPane9 = new javax.swing.JScrollPane();
-        processesPerPartitionsExecTable = new javax.swing.JTable();
-        unprocessedProcessesTablelbl3 = new javax.swing.JLabel();
+        condensationsTable = new javax.swing.JTable();
+        IOWhoPassesForPanel = new javax.swing.JPanel();
+        orderFinishingTablelbl2 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        processesAllocationTable = new javax.swing.JTable();
+        orderFinishingTablelbl3 = new javax.swing.JLabel();
         jScrollPane10 = new javax.swing.JScrollPane();
-        processesPerPartitionsExecTable1 = new javax.swing.JTable();
+        IOProcessesTable = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         defineQuantumjmi = new javax.swing.JMenuItem();
@@ -296,7 +253,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 .addGap(5, 5, 5)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 2060, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1883, Short.MAX_VALUE))
         );
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -331,115 +288,112 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tableHeaderPartitionslbl2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        tableHeaderPartitionslbl2.setText("Lista paso de procesos por particiones");
-
-        processesPerPartitionOutTable.setModel(processesPerPartitionsPassedTableModel);
-        jScrollPane5.setViewportView(processesPerPartitionOutTable);
-
-        javax.swing.GroupLayout processesPerPartitionsPanelLayout = new javax.swing.GroupLayout(processesPerPartitionsPanel);
-        processesPerPartitionsPanel.setLayout(processesPerPartitionsPanelLayout);
-        processesPerPartitionsPanelLayout.setHorizontalGroup(
-            processesPerPartitionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(processesPerPartitionsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(processesPerPartitionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
-                    .addGroup(processesPerPartitionsPanelLayout.createSequentialGroup()
-                        .addComponent(tableHeaderPartitionslbl2, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        processesPerPartitionsPanelLayout.setVerticalGroup(
-            processesPerPartitionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(processesPerPartitionsPanelLayout.createSequentialGroup()
-                .addComponent(tableHeaderPartitionslbl2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         orderFinishingTablelbl.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        orderFinishingTablelbl.setText("Orden de terminación de Particiones");
+        orderFinishingTablelbl.setText("Condensaciones");
+
+        orderFinishingTablelbl1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        orderFinishingTablelbl1.setText("Orden de terminación de Particiones");
 
         orderFinishingTable.setModel(orderFinishingPartitionsTableModel);
-        jScrollPane8.setViewportView(orderFinishingTable);
+        jScrollPane11.setViewportView(orderFinishingTable);
 
-        javax.swing.GroupLayout orderFinishingPanelLayout = new javax.swing.GroupLayout(orderFinishingPanel);
-        orderFinishingPanel.setLayout(orderFinishingPanelLayout);
-        orderFinishingPanelLayout.setHorizontalGroup(
-            orderFinishingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(orderFinishingPanelLayout.createSequentialGroup()
+        condensationsTable.setModel(processesAllocationTable.getModel());
+        jScrollPane9.setViewportView(condensationsTable);
+
+        javax.swing.GroupLayout orderFinishingAndCondensationsPanelLayout = new javax.swing.GroupLayout(orderFinishingAndCondensationsPanel);
+        orderFinishingAndCondensationsPanel.setLayout(orderFinishingAndCondensationsPanelLayout);
+        orderFinishingAndCondensationsPanelLayout.setHorizontalGroup(
+            orderFinishingAndCondensationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(orderFinishingAndCondensationsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(orderFinishingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane8)
-                    .addGroup(orderFinishingPanelLayout.createSequentialGroup()
-                        .addComponent(orderFinishingTablelbl, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(orderFinishingAndCondensationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(orderFinishingTablelbl, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(orderFinishingTablelbl1, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(372, Short.MAX_VALUE))
+            .addGroup(orderFinishingAndCondensationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(orderFinishingAndCondensationsPanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(orderFinishingAndCondensationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(orderFinishingAndCondensationsPanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        orderFinishingAndCondensationsPanelLayout.setVerticalGroup(
+            orderFinishingAndCondensationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(orderFinishingAndCondensationsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(orderFinishingTablelbl1)
+                .addGap(163, 163, 163)
+                .addComponent(orderFinishingTablelbl)
+                .addContainerGap(209, Short.MAX_VALUE))
+            .addGroup(orderFinishingAndCondensationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(orderFinishingAndCondensationsPanelLayout.createSequentialGroup()
+                    .addGap(56, 56, 56)
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(246, Short.MAX_VALUE)))
+            .addGroup(orderFinishingAndCondensationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, orderFinishingAndCondensationsPanelLayout.createSequentialGroup()
+                    .addContainerGap(253, Short.MAX_VALUE)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(49, 49, 49)))
+        );
+
+        orderFinishingTablelbl2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        orderFinishingTablelbl2.setText("Asignación Particiones a Procesos");
+
+        processesAllocationTable.setModel(processesAllocationTableModel);
+        jScrollPane8.setViewportView(processesAllocationTable);
+
+        orderFinishingTablelbl3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        orderFinishingTablelbl3.setText("Procesos E/S");
+
+        IOProcessesTable.setModel(IOProcessesTableModel);
+        jScrollPane10.setViewportView(IOProcessesTable);
+
+        javax.swing.GroupLayout IOWhoPassesForPanelLayout = new javax.swing.GroupLayout(IOWhoPassesForPanel);
+        IOWhoPassesForPanel.setLayout(IOWhoPassesForPanelLayout);
+        IOWhoPassesForPanelLayout.setHorizontalGroup(
+            IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
+                    .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
+                        .addComponent(orderFinishingTablelbl2, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
+                    .addGap(20, 20, 20)
+                    .addComponent(orderFinishingTablelbl3, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(362, Short.MAX_VALUE)))
+            .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
-        orderFinishingPanelLayout.setVerticalGroup(
-            orderFinishingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(orderFinishingPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(orderFinishingTablelbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        IOWhoPassesForPanelLayout.setVerticalGroup(
+            IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
+                .addGap(201, 201, 201)
+                .addComponent(orderFinishingTablelbl2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
-
-        unprocessedProcessesTablelbl1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        unprocessedProcessesTablelbl1.setText("Lista Salida Procesos por Particiones");
-
-        processesPerPartitionsOutTable.setModel(processesPerPartitionsOutTableModel);
-        jScrollPane7.setViewportView(processesPerPartitionsOutTable);
-
-        unprocessedProcessesTablelbl2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        unprocessedProcessesTablelbl2.setText("Lista Ejecución Procesos por Particiones");
-
-        processesPerPartitionsExecTable.setModel(processesPerPartitionsExecTableModel);
-        jScrollPane9.setViewportView(processesPerPartitionsExecTable);
-
-        unprocessedProcessesTablelbl3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        unprocessedProcessesTablelbl3.setText("Lista Procesos Listos por Particiones");
-
-        processesPerPartitionsExecTable1.setModel(processesPerPartitionsExecTableModel);
-        jScrollPane10.setViewportView(processesPerPartitionsExecTable1);
-
-        javax.swing.GroupLayout processesPerPartitionsReadyExecOutPanelLayout = new javax.swing.GroupLayout(processesPerPartitionsReadyExecOutPanel);
-        processesPerPartitionsReadyExecOutPanel.setLayout(processesPerPartitionsReadyExecOutPanelLayout);
-        processesPerPartitionsReadyExecOutPanelLayout.setHorizontalGroup(
-            processesPerPartitionsReadyExecOutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(processesPerPartitionsReadyExecOutPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(processesPerPartitionsReadyExecOutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
-                    .addGroup(processesPerPartitionsReadyExecOutPanelLayout.createSequentialGroup()
-                        .addGroup(processesPerPartitionsReadyExecOutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(unprocessedProcessesTablelbl1, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(unprocessedProcessesTablelbl2, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(unprocessedProcessesTablelbl3, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        processesPerPartitionsReadyExecOutPanelLayout.setVerticalGroup(
-            processesPerPartitionsReadyExecOutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(processesPerPartitionsReadyExecOutPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(unprocessedProcessesTablelbl3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(unprocessedProcessesTablelbl2)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(unprocessedProcessesTablelbl1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(191, Short.MAX_VALUE))
+            .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
+                    .addGap(21, 21, 21)
+                    .addComponent(orderFinishingTablelbl3)
+                    .addContainerGap(521, Short.MAX_VALUE)))
+            .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
+                    .addGap(61, 61, 61)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(371, Short.MAX_VALUE)))
         );
 
         jMenu1.setText("Configuración");
@@ -475,9 +429,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(processesIOPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(processesPerPartitionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(orderFinishingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(processesPerPartitionsReadyExecOutPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(orderFinishingAndCondensationsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(IOWhoPassesForPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -492,12 +445,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(processesIOPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(orderFinishingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(processesPerPartitionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(processesPerPartitionsReadyExecOutPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 397, Short.MAX_VALUE)))
+                                .addComponent(orderFinishingAndCondensationsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(IOWhoPassesForPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 469, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
 
@@ -589,14 +540,16 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         partitionsReportbtn1.setVisible(!isInitial);
         partitionsReportbtn2.setVisible(!isInitial);
         processesTable.setComponentPopupMenu((isInitial) ? processesPopupMenu : null);
-        processesPerPartitionsPanel.setVisible(!isInitial);
-        processesPerPartitionsReadyExecOutPanel.setVisible(!isInitial);
-        orderFinishingPanel.setVisible(false);
+        IOWhoPassesForPanel.setVisible(!isInitial);
+        orderFinishingAndCondensationsPanel.setVisible(false);
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable IOProcessesTable;
+    private javax.swing.JPanel IOWhoPassesForPanel;
     private javax.swing.JMenuItem checkManualjmi;
+    private javax.swing.JTable condensationsTable;
     private javax.swing.JButton createProcessbtn;
     private javax.swing.JMenuItem defineQuantumjmi;
     private javax.swing.JMenuItem deletePartitionjmi;
@@ -611,35 +564,28 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel menulbl;
-    private javax.swing.JPanel orderFinishingPanel;
+    private javax.swing.JPanel orderFinishingAndCondensationsPanel;
     private javax.swing.JTable orderFinishingTable;
     private javax.swing.JLabel orderFinishingTablelbl;
+    private javax.swing.JLabel orderFinishingTablelbl1;
+    private javax.swing.JLabel orderFinishingTablelbl2;
+    private javax.swing.JLabel orderFinishingTablelbl3;
     private javax.swing.JPopupMenu partitionsPopupMenu;
     private javax.swing.JButton partitionsReportbtn1;
     private javax.swing.JButton partitionsReportbtn2;
     private javax.swing.JButton partitionsandProcessesbtn;
+    private javax.swing.JTable processesAllocationTable;
     private javax.swing.JPanel processesIOPanel;
-    private javax.swing.JTable processesPerPartitionOutTable;
-    private javax.swing.JTable processesPerPartitionsExecTable;
-    private javax.swing.JTable processesPerPartitionsExecTable1;
-    private javax.swing.JTable processesPerPartitionsOutTable;
-    private javax.swing.JPanel processesPerPartitionsPanel;
-    private javax.swing.JPanel processesPerPartitionsReadyExecOutPanel;
     private javax.swing.JPopupMenu processesPopupMenu;
     private javax.swing.JTable processesTable;
     private javax.swing.JButton startbtn;
-    private javax.swing.JLabel tableHeaderPartitionslbl2;
     private javax.swing.JLabel tableHeaderProcesseslbl;
-    private javax.swing.JLabel unprocessedProcessesTablelbl1;
-    private javax.swing.JLabel unprocessedProcessesTablelbl2;
-    private javax.swing.JLabel unprocessedProcessesTablelbl3;
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -650,9 +596,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     public void showProcesses(ArrayList<Partition> partitionsList, ArrayList<Process> input_ProcessList) {
         clearTable();
         processesIOPanel.setVisible(true);
-        processesPerPartitionsPanel.setVisible(false);
-        orderFinishingPanel.setVisible(false);
-        processesPerPartitionsReadyExecOutPanel.setVisible(false);
+        orderFinishingAndCondensationsPanel.setVisible(false);
+        IOWhoPassesForPanel.setVisible(false);
         tableHeaderProcesseslbl.setText(GUIUtils.ADD_PROCESSES_LABEL_HEADER);
         processesTableModel.setColumnIdentifiers(GUIUtils.ADD_PROCESSES_TABLE_HEADERS);
         for (Process process : input_ProcessList) {
@@ -677,88 +622,40 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     }
 
     public void showProcessesPerPartitionsThatPassed(Object[] partitionTableHeaders, ArrayList<Partition> partitionsList) {
-
-        processesPerPartitionsPanel.setVisible(true);
         processesIOPanel.setVisible(false);
-        orderFinishingPanel.setVisible(false);
-        processesPerPartitionsReadyExecOutPanel.setVisible(false);
-
-        //SETEA LOS HEADERS DE LAS TABLAS Y LAS LIMPIA
-        processesPerPartitionsPassedTableModel.getDataVector().removeAllElements();
-        processesPerPartitionsPassedTableModel.setColumnIdentifiers(partitionTableHeaders);
-
-        ArrayList<Integer> sizesInput = new ArrayList<>();
-
-        for (Partition partition : partitionsList) {
-            sizesInput.add(partition.getInputProcesses().size());
-        }
-
-        int maxSizeOut = Collections.max(sizesInput);
-
-        processesPerPartitionsPassedTableModel.setRowCount(maxSizeOut);
-        //processesPerPartitionsUnpTableModel.setRowCount(maxSizeUnp);
-        for (int i = 0; i < partitionsList.size(); i++) {
-            for (int j = 0; j < partitionsList.get(i).getInputProcesses().size(); j++) {
-                processesPerPartitionsPassedTableModel.setValueAt(partitionsList.get(i).getInputProcesses().get(j).getName(), j, i);
-            }
-        }
+        orderFinishingAndCondensationsPanel.setVisible(false);
+        IOWhoPassesForPanel.setVisible(false);
     }
 
-    public void showOrderFinishingPartitions(ArrayList<Partition> output_PartitionsList) {
-        orderFinishingPanel.setVisible(true);
-        orderFinishingPartitionsTableModel.setColumnIdentifiers(GUIUtils.ORDER_FINISHING_PARTITIONS_TABLE_HEADERS);
-        orderFinishingPartitionsTableModel.setRowCount(output_PartitionsList.size());
+    public void showOrderFinishingPartitionsAndCondensations(ArrayList<Partition> output_PartitionsList) {
+        orderFinishingAndCondensationsPanel.setVisible(true);
+        orderFinishingPartitionsTableModel.getDataVector().removeAllElements();
         for (int i = 0; i < output_PartitionsList.size(); i++) {
             orderFinishingPartitionsTableModel.setValueAt(output_PartitionsList.get(i).getPartitionName(), i, 0);
             orderFinishingPartitionsTableModel.setValueAt(output_PartitionsList.get(i).getTotalExecutionTime(), i, 1);
         }
     }
 
-    public void showProcessesAllocation(ArrayList<Partition> partitions) {
+    public void showProcessesAllocationAndIOProcesses(ArrayList<Partition> partitions, ArrayList<Process> inputProcesses, ArrayList<Process> outputProcesses) {
+        processesAllocationTableModel.getDataVector().removeAllElements();
+        IOProcessesTableModel.getDataVector().removeAllElements();
+        for (Partition partition : partitions) {
+            processesAllocationTableModel.addRow(partition.getDataVectorForTableOfProcessesThatPassed());
+        }
+        IOProcessesTableModel.setRowCount(inputProcesses.size());
+        for (int i = 0; i < inputProcesses.size(); i++) {
+            IOProcessesTableModel.setValueAt(inputProcesses.get(i).getName(), i, 0);
+        }
 
+        for (int i = 0; i < outputProcesses.size(); i++) {
+            IOProcessesTableModel.setValueAt(outputProcesses.get(i).getName(), i, 1);
+        }
     }
 
-    public void showCondensations(ArrayList<Condensation> condensations) {
+    public void showOrderFinishingPartitionsAndCondensations(ArrayList<Process> output_ProcessList, ArrayList<Condensation> condensations) {
+         condensationsTableModel.getDataVector().removeAllElements();
         for (Condensation condensation : condensations) {
             condensationsTableModel.addRow(condensation.getDataVector());
         }
-    }
-
-    public void showProcessesPerPartitionsReadyExecOut(Object[] partitionTableHeaders, ArrayList<Partition> partitionsList) {
-        processesPerPartitionsPanel.setVisible(false);
-        processesIOPanel.setVisible(false);
-        orderFinishingPanel.setVisible(false);
-        processesPerPartitionsReadyExecOutPanel.setVisible(true);
-
-        processesPerPartitionsExecTableModel.getDataVector().removeAllElements();
-        processesPerPartitionsOutTableModel.getDataVector().removeAllElements();
-        processesPerPartitionsExecTableModel.setColumnIdentifiers(partitionTableHeaders);
-        processesPerPartitionsOutTableModel.setColumnIdentifiers(partitionTableHeaders);
-
-        ArrayList<Integer> sizesExec = new ArrayList<>();
-        ArrayList<Integer> sizesOut = new ArrayList<>();
-
-        for (Partition partition : partitionsList) {
-            sizesExec.add(partition.getExecutionProcesses().size());
-            sizesOut.add(partition.getOutputListProcesses().size());
-        }
-
-        int maxSizeExec = Collections.max(sizesExec);
-        int maxSizeOut = Collections.max(sizesOut);
-
-        processesPerPartitionsExecTableModel.setRowCount(maxSizeExec);
-        processesPerPartitionsOutTableModel.setRowCount(maxSizeOut);
-
-        for (int i = 0; i < partitionsList.size(); i++) {
-            for (int j = 0; j < partitionsList.get(i).getExecutionProcesses().size(); j++) {
-                processesPerPartitionsExecTableModel.setValueAt(partitionsList.get(i).getExecutionProcesses().get(j).getName(), j, i);
-            }
-        }
-        for (int i = 0; i < partitionsList.size(); i++) {
-            for (int j = 0; j < partitionsList.get(i).getOutputListProcesses().size(); j++) {
-                processesPerPartitionsOutTableModel.setValueAt(partitionsList.get(i).getOutputListProcesses().get(j).getName(), j, i);
-            }
-        }
-
     }
 }
