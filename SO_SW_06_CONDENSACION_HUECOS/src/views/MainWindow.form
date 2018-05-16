@@ -58,6 +58,11 @@
                 <Property name="text" type="java.lang.String" value="Definir Quantum"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="defineMemorySizejmi">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Definir Tama&#xf1;o Memoria"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">
@@ -115,7 +120,7 @@
               <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="processesIOPanel" max="32767" attributes="0"/>
+                  <Component id="processesPanel" max="32767" attributes="0"/>
                   <Component id="orderFinishingAndCondensationsPanel" max="32767" attributes="0"/>
                   <Component id="IOWhoPassesForPanel" alignment="0" max="32767" attributes="0"/>
               </Group>
@@ -133,12 +138,12 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jPanel1" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="processesIOPanel" min="-2" max="-2" attributes="0"/>
+                              <Component id="processesPanel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="orderFinishingAndCondensationsPanel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="IOWhoPassesForPanel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="469" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="33" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -185,7 +190,7 @@
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="jSeparator2" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jPanel3" pref="1883" max="32767" attributes="0"/>
+                  <Component id="jPanel3" pref="1447" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -210,7 +215,7 @@
                           <Component id="exitbtn" alignment="0" max="32767" attributes="0"/>
                           <Component id="createProcessbtn" max="32767" attributes="0"/>
                           <Component id="startbtn" alignment="0" max="32767" attributes="0"/>
-                          <Component id="partitionsandProcessesbtn" alignment="1" max="32767" attributes="0"/>
+                          <Component id="processesbtn" alignment="1" max="32767" attributes="0"/>
                           <Component id="partitionsReportbtn1" alignment="1" pref="189" max="32767" attributes="0"/>
                           <Component id="partitionsReportbtn2" alignment="0" pref="189" max="32767" attributes="0"/>
                       </Group>
@@ -224,7 +229,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="createProcessbtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="partitionsandProcessesbtn" min="-2" max="-2" attributes="0"/>
+                      <Component id="processesbtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="partitionsReportbtn1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -266,12 +271,12 @@
                 <Property name="text" type="java.lang.String" value="Iniciar"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="partitionsandProcessesbtn">
+            <Component class="javax.swing.JButton" name="processesbtn">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="16" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Reporte General"/>
+                <Property name="text" type="java.lang.String" value="Procesos"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="partitionsReportbtn1">
@@ -310,7 +315,7 @@
         <Property name="orientation" type="int" value="1"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JPanel" name="processesIOPanel">
+    <Container class="javax.swing.JPanel" name="processesPanel">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -382,10 +387,10 @@
                   <EmptySpace pref="372" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane11" pref="756" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane11" min="-2" pref="322" max="-2" attributes="0"/>
+                      <EmptySpace pref="444" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
@@ -466,7 +471,7 @@
             <Component class="javax.swing.JTable" name="condensationsTable">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="processesAllocationTable.getModel()" type="code"/>
+                  <Connection code="condensationsTableModel" type="code"/>
                 </Property>
               </Properties>
             </Component>
@@ -483,8 +488,11 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane8" pref="756" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="orderFinishingTablelbl2" min="-2" pref="394" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="orderFinishingTablelbl2" alignment="0" min="-2" pref="394" max="-2" attributes="0"/>
+                              <Component id="orderFinishingTablelbl3" alignment="0" min="-2" pref="394" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -492,13 +500,6 @@
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="orderFinishingTablelbl3" min="-2" pref="394" max="-2" attributes="0"/>
-                      <EmptySpace pref="362" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-              <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane10" pref="756" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -509,24 +510,19 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="201" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                  <Component id="orderFinishingTablelbl3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="206" max="-2" attributes="0"/>
                   <Component id="orderFinishingTablelbl2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jScrollPane8" min="-2" pref="139" max="-2" attributes="0"/>
-                  <EmptySpace pref="191" max="32767" attributes="0"/>
+                  <Component id="jScrollPane8" pref="264" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                      <Component id="orderFinishingTablelbl3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="521" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-              <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-                      <Component id="jScrollPane10" min="-2" pref="139" max="-2" attributes="0"/>
-                      <EmptySpace pref="371" max="32767" attributes="0"/>
+                      <Component id="jScrollPane10" min="-2" pref="165" max="-2" attributes="0"/>
+                      <EmptySpace pref="345" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>

@@ -26,7 +26,6 @@ public class ProcessManager {
     private int memory;
     private int currentUsedMemory;
     private int lastAssigned;
-    
     private int currentIndex;
 
     //------------------------ Constructores -----------------------------
@@ -177,9 +176,9 @@ public class ProcessManager {
         excecuteProcess();
         condensate();
         do {
-        assignProcess();
-        excecuteProcess();
-        condensate();
+            assignProcess();
+            excecuteProcess();
+            condensate();
         } while (input_ProcessList.size() != output_ProcessList.size());
     }
 
@@ -187,13 +186,16 @@ public class ProcessManager {
         boolean aux = false;
         for (int i = 0; i < currentPartitionList.size() - 1; i++) {
             if (currentPartitionList.get(i).getAssignedProcess() == null && currentPartitionList.get(i + 1).getAssignedProcess() == null) {
+                Partition par1 = currentPartitionList.get(i);
+                Partition par2 = currentPartitionList.get(i + 1);
                 Condensation con = new Condensation(currentPartitionList.get(i), currentPartitionList.get(i + 1));
+                Partition conPar = new Partition(con.getCondensationSize());
+                con.setCondensatedPartition(conPar);
                 condensations.add(con);
-                Partition par = new Partition(con.getCondensationSize());
-                currentPartitionList.set(i, par);
+                currentPartitionList.set(i, conPar);
                 currentPartitionList.remove(i + 1);
                 try {
-                    partitionsList.add((Partition) par.clone());
+                    partitionsList.add((Partition) conPar.clone());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -296,8 +298,6 @@ public class ProcessManager {
     public ArrayList<Condensation> getCondensations() {
         return condensations;
     }
-    
-    
 
     @Override
     public String toString() {
@@ -323,4 +323,10 @@ public class ProcessManager {
     public void setQuantum(int quantum) {
         this.quantum = quantum;
     }
+
+    public void setMemory(int memory) {
+        this.memory = memory;
+    }
+    
+    
 }

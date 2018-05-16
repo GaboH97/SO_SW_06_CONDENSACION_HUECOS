@@ -10,6 +10,7 @@ public class Condensation {
 
     private Partition partition1;
     private Partition partition2;
+    private Partition condensatedPartition;
     private int condensationSize;
     private int condensationID;
     private String condensationName;
@@ -59,6 +60,14 @@ public class Condensation {
         return condensationName;
     }
 
+    public Partition getCondensatedPartition() {
+        return condensatedPartition;
+    }
+
+    public void setCondensatedPartition(Partition condensatedPartition) {
+        this.condensatedPartition = condensatedPartition;
+    }
+
     public void setCondensationName(String condensationName) {
         this.condensationName = condensationName;
     }
@@ -68,7 +77,9 @@ public class Condensation {
             getPartition1().getPartitionName(),
             getPartition1().getPartitionSize(),
             getPartition2().getPartitionName(),
-            getPartition2().getPartitionSize()
+            getPartition2().getPartitionSize(),
+            getCondensatedPartition().getPartitionName(),
+            getCondensatedPartition().getPartitionSize()
         };
     }
 

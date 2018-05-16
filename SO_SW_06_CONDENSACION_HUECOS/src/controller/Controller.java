@@ -66,18 +66,18 @@ public class Controller implements ActionListener {
         }
         return controller;
     }
-    
+
     private Controller() {
         processManager = new ProcessManager();
         mainWindow = new MainWindow(this);
         addProcessDialog = new AddProcessDialog(mainWindow, true, this);
     }
-    
+
     private Controller(ProcessManager processManager) {
         this.processManager = processManager;
         mainWindow = new MainWindow(this);
         addProcessDialog = new AddProcessDialog(mainWindow, true, this);
-        showPartitionsAndProcesses();
+        showProcesses();
     }
 
     //----------------------- Métodos -------------------------
@@ -109,12 +109,11 @@ public class Controller implements ActionListener {
             case OPEN_DEFINE_QUANTUM:
                 openDefineQuantum();
                 break;
-            case SHOW_PARTITIONS_AND_PROCESSES:
-                showPartitionsAndProcesses();
+            case OPEN_DEFINE_MEMORY_SIZE:
+                openDefineMemorySize();
                 break;
-            case SHOW_PARTITIONS_AND_PROCESSES_TWO:
-                showPartitionsAndProcesses();
-                mainWindow.showOrderFinishingPartitionsAndCondensations(processManager.getOutput_PartitionsList());
+            case SHOW_PARTITIONS_AND_PROCESSES:
+                showProcesses();
                 break;
             case SHOW_PARTITIONS_REPORT_1:
                 showPartitionsReport1();
@@ -124,16 +123,12 @@ public class Controller implements ActionListener {
                 break;
         }
     }
-    
+
     private void openCreateProcess() throws HeadlessException {
-        if (!processManager.getPartitionsList().isEmpty()) {
-            addProcessDialog.getCreateProcessbtn().setActionCommand(Actions.CREATE_PROCESS.name());
-            addProcessDialog.getProcessNamejtf().setEditable(true);
-            addProcessDialog.getProcessNamejtf().revalidate();
-            addProcessDialog.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(mainWindow, GUIUtils.MSG_NO_PARTITIONS, APP_TITLE, JOptionPane.ERROR_MESSAGE);
-        }
+        addProcessDialog.getCreateProcessbtn().setActionCommand(Actions.CREATE_PROCESS.name());
+        addProcessDialog.getProcessNamejtf().setEditable(true);
+        addProcessDialog.getProcessNamejtf().revalidate();
+        addProcessDialog.setVisible(true);
     }
 
     /**
@@ -178,17 +173,7 @@ public class Controller implements ActionListener {
      * Comienza la ejecución de los procesos
      */
     private void start() {
-        //Revisa que la lista no esté vacía, si no lo está, inicia la ejecución 
-        //de los procesos, cambia la perspectiva de la GUI principal y muestra
-        //los procesos E/S
-        if (processManager.getPartitionsList().isEmpty()) {
-            //Muestra un mensaje de error indicando que no hay procesos para eje-
-            //cutarse
-            JOptionPane.showMessageDialog(mainWindow,
-                    GUIUtils.MSG_NO_PROCESS,
-                    APP_TITLE,
-                    JOptionPane.ERROR_MESSAGE);
-        } else if (processManager.getInput_ProcessList().isEmpty()) {
+        if (processManager.getInput_ProcessList().isEmpty()) {
             //Muestra un mensaje de error indicando que no hay procesos para eje-
             //cutarse
             JOptionPane.showMessageDialog(mainWindow,
@@ -198,16 +183,9 @@ public class Controller implements ActionListener {
         } else {
             processManager.processProcesses1();
             mainWindow.showOptions(false);
-            mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
-            mainWindow.showOrderFinishingPartitionsAndCondensations(processManager.getOutput_PartitionsList());
-        }
-    }
+            mainWindow.showProcesses(processManager.getInput_ProcessList());
 
-    /**
-     * Muestra una tabla los procesos de entrada, salida y los no procesados
-     */
-    private void showProcessesPerPartitions() {
-        mainWindow.showProcessesPerPartitionsThatPassed(processManager.getPartitionTableHeaders(), processManager.getPartitionsList());
+        }
     }
 
     /**
@@ -228,7 +206,23 @@ public class Controller implements ActionListener {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
+    private void openDefineMemorySize() {
+        String input = JOptionPane.showInputDialog(mainWindow, "Indique el nuevo tamaño de la memoria");
+        //Verifica que el String de entrada sea numérico y que no esté vacío
+        //Si es así, cambia el Quantum del manejador de procesos
+        if (addProcessDialog.isNumeric(input) && !input.isEmpty() && input.length() < 6) {
+            processManager.setMemory(Integer.parseInt(input));
+        } else {
+            //Muestra un mensaje de error que indica que el tiempo ingresado es
+            //inválido
+            JOptionPane.showMessageDialog(mainWindow,
+                    GUIUtils.MSG_INVALID_TIME,
+                    GUIUtils.APP_TITLE,
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
@@ -236,9 +230,8 @@ public class Controller implements ActionListener {
     /**
      * Muestra las particiones y procesos creados
      */
-    private void showPartitionsAndProcesses() {
-        mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
-//        mainWindow.showOrderFinishingPartitions(processManager.getOutput_PartitionsList());
+    private void showProcesses() {
+        mainWindow.showProcesses(processManager.getInput_ProcessList());
     }
 
     /**
@@ -270,14 +263,13 @@ public class Controller implements ActionListener {
      * @param processName Nombre del proceso a borrar
      */
     public void deleteProcess(String processName) {
-        
+
         int option = JOptionPane.showConfirmDialog(mainWindow, GUIUtils.MSG_CONFIRM_DELETE_PROCESS, APP_TITLE, JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
             try {
                 logic.Process p = processManager.searchProcess(processName, processManager.getInput_ProcessList());
                 processManager.getInput_ProcessList().remove(p);
-                mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
-                System.out.println("wiii");
+                mainWindow.showProcesses(processManager.getInput_ProcessList());
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(mainWindow,
                         GUIUtils.MSG_CANNOT_DELETE_PROCESS,
@@ -285,21 +277,21 @@ public class Controller implements ActionListener {
             }
         }
     }
-    
+
     private void showPartitionsReport1() {
         mainWindow.showProcessesAllocationAndIOProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList(), processManager.getOutput_ProcessList());
     }
-    
+
     private void showPartitionsReport2() {
-        mainWindow.showOrderFinishingPartitionsAndCondensations(processManager.getOutput_ProcessList(), processManager.getCondensations());
+        mainWindow.showOrderFinishingPartitionsAndCondensations(processManager.getOutput_PartitionsList(), processManager.getCondensations());
     }
-    
+
     private void editProcess() {
         try {
             logic.Process pro = addProcessDialog.editProccess(processManager.getPartitionsList());
             int indexOfProcesstoEdit = processManager.getInput_ProcessList().indexOf(processManager.searchProcess(pro.getName(), processManager.getInput_ProcessList()));
             processManager.getInput_ProcessList().set(indexOfProcesstoEdit, pro);
-            mainWindow.showProcesses(processManager.getPartitionsList(), processManager.getInput_ProcessList());
+            mainWindow.showProcesses(processManager.getInput_ProcessList());
             addProcessDialog.close();
         } catch (Exception ex) {
             ex.printStackTrace();

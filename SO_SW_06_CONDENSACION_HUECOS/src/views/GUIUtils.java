@@ -14,14 +14,14 @@ public class GUIUtils {
     public static final String[] ADD_PROCESSES_TABLE_HEADERS = new String[]{"Nombre", "Tiempo", "Tamaño"};
     public static final String[] REPORT_PROCESSES_TABLE_HEADERS = new String[]{"Nombre", "Tiempo", "Tamaño", "Partición Asignada"};
     public static final String[] ADD_PARTITIONS_TABLE_HEADERS = new String[]{"Nombre", "Tamaño"};
-    public static final String[] ORDER_FINISHING_PARTITIONS_TABLE_HEADERS = new String[]{"Nombre", "Tiempo total"};
+    public static final String[] ORDER_FINISHING_PARTITIONS_TABLE_HEADERS = new String[]{"Nombre"};
     public static final String ADD_PARTITIONS_LABEL_HEADER = "Particiones";
     public static final String ADD_PROCESSES_LABEL_HEADER = "Procesos";
     public static final String IO_PROCESSES_LABEL_HEADER = "Procesos E/S";
     //SW_06
     public static final String[] IO_PROCESSES_TABLE_HEADERS = new String[]{"Procesos de Entrada", "Procesos de Salida"};
-    public static final String[] CONDENSATIONS_TABLE_HEADER = new String[]{"Partición", "Proceso", "Tamaño Proceso"};
-    public static final String[] ALLOCATION_TABLE_HEADERS = new String[]{"Nombre", "Partición 1", "Tamaño Partición 1","Partición 2", "Tamaño Partición 2","Nueva Partición", "Tamaño Nueva Partición"};
+    public static final String[] ALLOCATION_TABLE_HEADERS = new String[]{"Partición", "Proceso", "Tamaño"};
+    public static final String[] CONDENSATIONS_TABLE_HEADER = new String[]{"Nombre", "Part. 1", "Tam. Part. 1","Part. 2", "Tam. Part. 2","Part Conden.", "Tam. Par. Conden."};
 
     //---------------------- MESSAGES ----------------------
     public static final String MSG_EMPTY_FIELDS = "Hay campos vacíos";

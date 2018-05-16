@@ -93,6 +93,6 @@ public class Partition implements Cloneable{
     }   
     
     public Object[] getDataVectorForTableOfProcessesThatPassed(){
-        return new Object[]{getPartitionName(),getAssignedProcess().getName(),getPartitionSize()};
+        return new Object[]{getPartitionName(),(getAssignedProcess()!=null)?getAssignedProcess().getName():"NA",getPartitionSize()};
     }
 }

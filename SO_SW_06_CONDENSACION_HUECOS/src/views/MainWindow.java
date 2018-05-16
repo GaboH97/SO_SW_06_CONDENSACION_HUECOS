@@ -34,7 +34,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     private DefaultTableModel processesAllocationTableModel;
     private DefaultTableModel condensationsTableModel;
     private DefaultTableModel orderFinishingPartitionsTableModel;
-
+    
     private Controller controller;
 
     //---------------------- Constructores -------------------------
@@ -44,11 +44,11 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
      * @param controller referencia al controlador que manejará los eventos
      */
     public MainWindow(Controller controller) {
-
+        
         this.controller = controller;
-
+        
         processesTableModel = new DefaultTableModel(GUIUtils.ADD_PROCESSES_TABLE_HEADERS, 0) {
-
+            
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -57,37 +57,37 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
         //sw 06
         IOProcessesTableModel = new DefaultTableModel(GUIUtils.IO_PROCESSES_TABLE_HEADERS, 0) {
-
+            
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-
+        
         processesAllocationTableModel = new DefaultTableModel(GUIUtils.ALLOCATION_TABLE_HEADERS, 0) {
-
+            
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-
+        
         condensationsTableModel = new DefaultTableModel(GUIUtils.CONDENSATIONS_TABLE_HEADER, 0) {
-
+            
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-
+        
         orderFinishingPartitionsTableModel = new DefaultTableModel(GUIUtils.ORDER_FINISHING_PARTITIONS_TABLE_HEADERS, 0) {
-
+            
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-
+        
         this.setTitle(APP_TITLE);
         //this.setUndecorated(true);
         initComponents();
@@ -115,13 +115,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         createProcessbtn = new javax.swing.JButton();
         exitbtn = new javax.swing.JButton();
         startbtn = new javax.swing.JButton();
-        partitionsandProcessesbtn = new javax.swing.JButton();
+        processesbtn = new javax.swing.JButton();
         partitionsReportbtn1 = new javax.swing.JButton();
         partitionsReportbtn2 = new javax.swing.JButton();
         menulbl = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator1 = new javax.swing.JSeparator();
-        processesIOPanel = new javax.swing.JPanel();
+        processesPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         processesTable = new javax.swing.JTable();
         tableHeaderProcesseslbl = new javax.swing.JLabel();
@@ -142,6 +142,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         defineQuantumjmi = new javax.swing.JMenuItem();
+        defineMemorySizejmi = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         checkManualjmi = new javax.swing.JMenuItem();
 
@@ -183,8 +184,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         startbtn.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         startbtn.setText("Iniciar");
 
-        partitionsandProcessesbtn.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        partitionsandProcessesbtn.setText("Reporte General");
+        processesbtn.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        processesbtn.setText("Procesos");
 
         partitionsReportbtn1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         partitionsReportbtn1.setText("Reporte Particiones 1");
@@ -202,7 +203,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                     .addComponent(exitbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(createProcessbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(startbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(partitionsandProcessesbtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(processesbtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(partitionsReportbtn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
                     .addComponent(partitionsReportbtn2, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE))
                 .addContainerGap())
@@ -213,7 +214,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 .addContainerGap()
                 .addComponent(createProcessbtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(partitionsandProcessesbtn)
+                .addComponent(processesbtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(partitionsReportbtn1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -253,7 +254,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 .addGap(5, 5, 5)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1883, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1447, Short.MAX_VALUE))
         );
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -265,22 +266,22 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         tableHeaderProcesseslbl.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         tableHeaderProcesseslbl.setText("Procesos");
 
-        javax.swing.GroupLayout processesIOPanelLayout = new javax.swing.GroupLayout(processesIOPanel);
-        processesIOPanel.setLayout(processesIOPanelLayout);
-        processesIOPanelLayout.setHorizontalGroup(
-            processesIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(processesIOPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout processesPanelLayout = new javax.swing.GroupLayout(processesPanel);
+        processesPanel.setLayout(processesPanelLayout);
+        processesPanelLayout.setHorizontalGroup(
+            processesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(processesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(processesIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(processesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tableHeaderProcesseslbl, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
-                    .addGroup(processesIOPanelLayout.createSequentialGroup()
+                    .addGroup(processesPanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        processesIOPanelLayout.setVerticalGroup(
-            processesIOPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, processesIOPanelLayout.createSequentialGroup()
+        processesPanelLayout.setVerticalGroup(
+            processesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, processesPanelLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
                 .addComponent(tableHeaderProcesseslbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -297,7 +298,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         orderFinishingTable.setModel(orderFinishingPartitionsTableModel);
         jScrollPane11.setViewportView(orderFinishingTable);
 
-        condensationsTable.setModel(processesAllocationTable.getModel());
+        condensationsTable.setModel(condensationsTableModel);
         jScrollPane9.setViewportView(condensationsTable);
 
         javax.swing.GroupLayout orderFinishingAndCondensationsPanelLayout = new javax.swing.GroupLayout(orderFinishingAndCondensationsPanel);
@@ -313,8 +314,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
             .addGroup(orderFinishingAndCondensationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(orderFinishingAndCondensationsPanelLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
-                    .addContainerGap()))
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(444, Short.MAX_VALUE)))
             .addGroup(orderFinishingAndCondensationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(orderFinishingAndCondensationsPanelLayout.createSequentialGroup()
                     .addContainerGap()
@@ -362,14 +363,11 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
                     .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
-                        .addComponent(orderFinishingTablelbl2, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(orderFinishingTablelbl2, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(orderFinishingTablelbl3, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
-                    .addGap(20, 20, 20)
-                    .addComponent(orderFinishingTablelbl3, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(362, Short.MAX_VALUE)))
             .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
                     .addContainerGap()
@@ -379,27 +377,27 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         IOWhoPassesForPanelLayout.setVerticalGroup(
             IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
-                .addGap(201, 201, 201)
+                .addGap(21, 21, 21)
+                .addComponent(orderFinishingTablelbl3)
+                .addGap(206, 206, 206)
                 .addComponent(orderFinishingTablelbl2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(191, Short.MAX_VALUE))
-            .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
-                    .addGap(21, 21, 21)
-                    .addComponent(orderFinishingTablelbl3)
-                    .addContainerGap(521, Short.MAX_VALUE)))
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(IOWhoPassesForPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(IOWhoPassesForPanelLayout.createSequentialGroup()
                     .addGap(61, 61, 61)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(371, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(345, Short.MAX_VALUE)))
         );
 
         jMenu1.setText("Configuración");
 
         defineQuantumjmi.setText("Definir Quantum");
         jMenu1.add(defineQuantumjmi);
+
+        defineMemorySizejmi.setText("Definir Tamaño Memoria");
+        jMenu1.add(defineMemorySizejmi);
 
         jMenuBar1.add(jMenu1);
 
@@ -428,7 +426,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(processesIOPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(processesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(orderFinishingAndCondensationsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(IOWhoPassesForPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -443,12 +441,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(processesIOPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(processesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(orderFinishingAndCondensationsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(IOWhoPassesForPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 469, Short.MAX_VALUE)))
+                                .addGap(0, 33, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
 
@@ -468,8 +466,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         startbtn.addActionListener(controller);
         defineQuantumjmi.setActionCommand(Actions.OPEN_DEFINE_QUANTUM.name());
         defineQuantumjmi.addActionListener(controller);
-        partitionsandProcessesbtn.setActionCommand(Actions.SHOW_PARTITIONS_AND_PROCESSES_TWO.name());
-        partitionsandProcessesbtn.addActionListener(controller);
+        defineMemorySizejmi.setActionCommand(Actions.OPEN_DEFINE_MEMORY_SIZE.name());
+        defineMemorySizejmi.addActionListener(controller);
+        processesbtn.setActionCommand(Actions.SHOW_PARTITIONS_AND_PROCESSES.name());
+        processesbtn.addActionListener(controller);
         //     generalReportbtn.setActionCommand(Actions.SHOW_GENERAL_REPORT.name());
         //   generalReportbtn.addActionListener(controller);
         partitionsReportbtn1.setActionCommand(Actions.SHOW_PARTITIONS_REPORT_1.name());
@@ -477,12 +477,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         partitionsReportbtn2.setActionCommand(Actions.SHOW_PARTITIONS_REPORT_2.name());
         partitionsReportbtn2.addActionListener(controller);
 
-        //---------------OPCIONES JPOPUPMENUS
+        //---------------OPCIONES JPOPUPMENUS-------------------------
         editPartitionjmi.addActionListener(this);
         deletePartitionjmi.addActionListener(this);
         editProcessjmi.addActionListener(this);
         deleteProcessjmi.addActionListener(this);
-
+        
     }
 
     /**
@@ -536,12 +536,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     public void showOptions(boolean isInitial) {
         createProcessbtn.setVisible(isInitial);
         startbtn.setVisible(isInitial);
-        partitionsandProcessesbtn.setVisible(!isInitial);
+        processesbtn.setVisible(!isInitial);
         partitionsReportbtn1.setVisible(!isInitial);
         partitionsReportbtn2.setVisible(!isInitial);
         processesTable.setComponentPopupMenu((isInitial) ? processesPopupMenu : null);
         IOWhoPassesForPanel.setVisible(!isInitial);
-        orderFinishingAndCondensationsPanel.setVisible(false);
+        orderFinishingAndCondensationsPanel.setVisible(!isInitial);
+        
     }
 
 
@@ -551,6 +552,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JMenuItem checkManualjmi;
     private javax.swing.JTable condensationsTable;
     private javax.swing.JButton createProcessbtn;
+    private javax.swing.JMenuItem defineMemorySizejmi;
     private javax.swing.JMenuItem defineQuantumjmi;
     private javax.swing.JMenuItem deletePartitionjmi;
     private javax.swing.JMenuItem deleteProcessjmi;
@@ -579,11 +581,11 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JPopupMenu partitionsPopupMenu;
     private javax.swing.JButton partitionsReportbtn1;
     private javax.swing.JButton partitionsReportbtn2;
-    private javax.swing.JButton partitionsandProcessesbtn;
     private javax.swing.JTable processesAllocationTable;
-    private javax.swing.JPanel processesIOPanel;
+    private javax.swing.JPanel processesPanel;
     private javax.swing.JPopupMenu processesPopupMenu;
     private javax.swing.JTable processesTable;
+    private javax.swing.JButton processesbtn;
     private javax.swing.JButton startbtn;
     private javax.swing.JLabel tableHeaderProcesseslbl;
     // End of variables declaration//GEN-END:variables
@@ -593,19 +595,17 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
      * @param partitionsList
      * @param input_ProcessList
      */
-    public void showProcesses(ArrayList<Partition> partitionsList, ArrayList<Process> input_ProcessList) {
+    public void showProcesses(ArrayList<Process> input_ProcessList) {
         clearTable();
-        processesIOPanel.setVisible(true);
+        processesPanel.setVisible(true);
         orderFinishingAndCondensationsPanel.setVisible(false);
         IOWhoPassesForPanel.setVisible(false);
-        tableHeaderProcesseslbl.setText(GUIUtils.ADD_PROCESSES_LABEL_HEADER);
-        processesTableModel.setColumnIdentifiers(GUIUtils.ADD_PROCESSES_TABLE_HEADERS);
         for (Process process : input_ProcessList) {
             addProcess(process);
         }
         this.revalidate();
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         JMenuItem menuItem = (JMenuItem) e.getSource();
@@ -620,23 +620,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         }
 //        System.out.println("salio");  
     }
-
-    public void showProcessesPerPartitionsThatPassed(Object[] partitionTableHeaders, ArrayList<Partition> partitionsList) {
-        processesIOPanel.setVisible(false);
-        orderFinishingAndCondensationsPanel.setVisible(false);
-        IOWhoPassesForPanel.setVisible(false);
-    }
-
-    public void showOrderFinishingPartitionsAndCondensations(ArrayList<Partition> output_PartitionsList) {
-        orderFinishingAndCondensationsPanel.setVisible(true);
-        orderFinishingPartitionsTableModel.getDataVector().removeAllElements();
-        for (int i = 0; i < output_PartitionsList.size(); i++) {
-            orderFinishingPartitionsTableModel.setValueAt(output_PartitionsList.get(i).getPartitionName(), i, 0);
-            orderFinishingPartitionsTableModel.setValueAt(output_PartitionsList.get(i).getTotalExecutionTime(), i, 1);
-        }
-    }
-
+    
+    
+    
     public void showProcessesAllocationAndIOProcesses(ArrayList<Partition> partitions, ArrayList<Process> inputProcesses, ArrayList<Process> outputProcesses) {
+        IOWhoPassesForPanel.setVisible(true);
+        processesPanel.setVisible(false);
+        orderFinishingAndCondensationsPanel.setVisible(false);
         processesAllocationTableModel.getDataVector().removeAllElements();
         IOProcessesTableModel.getDataVector().removeAllElements();
         for (Partition partition : partitions) {
@@ -646,16 +636,23 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         for (int i = 0; i < inputProcesses.size(); i++) {
             IOProcessesTableModel.setValueAt(inputProcesses.get(i).getName(), i, 0);
         }
-
+        
         for (int i = 0; i < outputProcesses.size(); i++) {
             IOProcessesTableModel.setValueAt(outputProcesses.get(i).getName(), i, 1);
         }
     }
-
-    public void showOrderFinishingPartitionsAndCondensations(ArrayList<Process> output_ProcessList, ArrayList<Condensation> condensations) {
-         condensationsTableModel.getDataVector().removeAllElements();
+    
+    public void showOrderFinishingPartitionsAndCondensations(ArrayList<Partition> output_PartitionsList, ArrayList<Condensation> condensations) {
+        IOWhoPassesForPanel.setVisible(false);
+        processesPanel.setVisible(false);
+        orderFinishingAndCondensationsPanel.setVisible(true);
+        condensationsTableModel.getDataVector().removeAllElements();
+        orderFinishingPartitionsTableModel.getDataVector().removeAllElements();
         for (Condensation condensation : condensations) {
             condensationsTableModel.addRow(condensation.getDataVector());
+        }
+        for (Partition partition : output_PartitionsList) {
+            orderFinishingPartitionsTableModel.addRow(new Object[]{partition.getPartitionSize()});
         }
     }
 }
